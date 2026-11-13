@@ -45,6 +45,22 @@ static inline int nm_face_lighting_eval(unsigned mode, const float source_normal
             reciprocal=shz_inv_sqrtf(squared_length);
             if(!nm_finite_float(reciprocal)) return -1;
         }
+#elif defined(__XTENSA__)
+        {
+            /* EspRacer (presentation only, like the Dreamcast's fsrra path above): 1/sqrt from the float bits
+               and two Newton steps (relative error under 5e-6). The generic path below costs a software double
+               sqrt (about 800 cycles there) and a divide per lit face. */
+            if (!nm_finite_float(squared_length)) return -1;
+            reciprocal = 0.0f;
+            if (squared_length > 0.0f) {
+                union { float f; unsigned u; } r = { squared_length };
+                const float half = 0.5f * squared_length;
+                r.u = 0x5f3759dfu - (r.u >> 1);
+                r.f *= 1.5f - half * r.f * r.f;
+                r.f *= 1.5f - half * r.f * r.f;
+                reciprocal = r.f;
+            }
+        }
 #else
         {
             const float length = (float)sqrt((double)squared_length);

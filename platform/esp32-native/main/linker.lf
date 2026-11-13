@@ -1,0 +1,19 @@
+# Big zero-initialised statics (the practice scene, the race field) live in PSRAM; the renderer's own state
+# and tables (twiddle tables, counters) stay in internal RAM, read on every pixel.
+[mapping:daytona_bss]
+archive: libmain.a
+entries:
+    * (extram_bss)
+    sw3d (default)
+
+# The triangle filler in internal RAM: no waiting on the flash cache behind the game's code (guide 6.6).
+[mapping:daytona_iram]
+archive: libmain.a
+entries:
+    sw3d:raster_body (noflash)
+    sw3d:fill_band (noflash)
+    sw3d:sky_draw (noflash)
+    sw3d:span_textured (noflash)
+    sw3d:draw_face (noflash)
+    sw3d:paint_for (noflash)
+    sw3d:box_visible (noflash)

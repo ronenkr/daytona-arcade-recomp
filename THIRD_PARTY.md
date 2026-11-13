@@ -70,3 +70,6 @@ and shipped license are documented in [the Vita dependency record](platform/vita
 The Dreamcast-native port's components (enDjinn, SH4ZAM, KallistiOS, AICAflow,
 AICAforge, the music pack) are in
 [its dependency record](platform/dreamcast-native/THIRD_PARTY.md).
+
+The EspRacer (ESP32-S3) port's components (KallistiOS PVR code adapted for its 2D layer, ESP-IDF, esp_codec_dev)
+are in [its dependency record](platform/esp32-native/THIRD_PARTY.md).
